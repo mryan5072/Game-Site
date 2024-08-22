@@ -1,35 +1,15 @@
-"use client";
-
-import { useState } from 'react';
+// components/Navbar.tsx
 import Link from 'next/link';
-//import styles from './Navbar.module.css';
 
 const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.logo}>
-        <Link href="/">GameTracker</Link>
+    <nav className="bg-gray-800 p-4 text-white flex justify-between items-center">
+      <div className="text-2xl font-bold">Game Tracker</div>
+      <div className="flex space-x-4">
+        <Link href="/about">about</Link>
+        <Link href="/mylist">my list</Link>
+        <Link href="/login">log in</Link>
       </div>
-      <button className={styles.menuButton} onClick={toggleMenu}>
-        ☰
-      </button>
-      <ul className={`${styles.navLinks} ${isOpen ? styles.active : ''}`}>
-        <li>
-          <Link href="/">Home</Link>
-        </li>
-        <li>
-          <Link href="/games">Games</Link>
-        </li>
-        <li>
-          <Link href="/about">About</Link>
-        </li>
-      </ul>
     </nav>
   );
 };
