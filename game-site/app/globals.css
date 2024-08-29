@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 25, 25, 25;
+  --background-start-rgb: 25, 25, 25;
+  --background-end-rgb: 25, 25, 25;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 50, 50, 50;
-    --background-end-rgb: 50, 50, 50;
+    --foreground-rgb: 25, 25, 25;
+    --background-start-rgb: 25, 25, 25;
+    --background-end-rgb: 25, 25, 25;
   }
 }
 
@@ -20,15 +20,18 @@ body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
-      transparent,
+      rgb(var(--background-start-rgb)),
       rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-  padding: 10100;
+    );
+  padding: 0; /* Corrected padding value */
 }
 
 @layer utilities {
   .text-balance {
-    text-wrap: balance;
+    /* The `text-wrap` property is not standard; if you need balance text, you might use:
+       - text-align: justify;
+       - text-align-last: justify; (for the last line)
+    */
+    text-align: justify; 
   }
 }

@@ -1,5 +1,6 @@
 // components/Navbar.tsx
 import Link from 'next/link';
+import "../../app/globals.css";
 
 const Navbar: React.FC = () => {
   return (
