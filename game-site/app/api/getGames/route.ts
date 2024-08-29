@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const searchQuery = url.searchParams.get('search') || '';
 
     // Fetch the access token from your /api/getToken endpoint
-    const tokenResponse = await fetch('http://localhost:3000/api/getToken', { method: 'POST' });
+    const tokenResponse = await fetch(process.env.NEXT_PUBLIC_API_URL! + '/api/getToken', { method: 'POST' });
     const tokenData = await tokenResponse.json();
     const accessToken = tokenData.access_token;
 
