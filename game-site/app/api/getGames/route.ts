@@ -5,6 +5,7 @@ export async function POST(request: Request) {
     const limit = parseInt(url.searchParams.get('limit') || '20');
     const searchQuery = url.searchParams.get('search') || '';
     const platformId = url.searchParams.get('platform') || '';
+    const category = url.searchParams.get('category') || '';
     const sortBy = url.searchParams.get('sortby') || 'rating_desc'; // Default sort by rating
 
     // Fetch the access token from your /api/getToken endpoint
@@ -17,12 +18,16 @@ export async function POST(request: Request) {
 
     // Construct query body
     let queryBody = `
-      fields id,name,rating,cover.image_id,platforms,first_release_date;
+      fields id,name,category,rating,total_rating,cover.image_id,platforms,first_release_date;
       where cover != null
     `;
 
     if (platformId) {
       queryBody += ` & platforms = (${platformId})`;
+    }
+
+    if (category) {
+      queryBody += ` & category = (${category})`;
     }
 
     if (searchQuery) {
@@ -31,9 +36,9 @@ export async function POST(request: Request) {
     } else {
       // Apply sorting based on sortBy parameter
       if (sortBy === 'rating_desc') {
-        queryBody += `; sort rating desc`;
+        queryBody += `; sort total_rating desc`;
       } else if (sortBy === 'rating_asc') {
-        queryBody += `; sort rating asc`;
+        queryBody += `; sort total_rating asc`;
       } else if (sortBy === 'release_date_desc') {
         queryBody += `; sort first_release_date desc`;
       } else if (sortBy === 'release_date_asc') {
