@@ -6,7 +6,36 @@ export async function POST(request: Request) {
     const searchQuery = url.searchParams.get('search') || '';
     const platformId = url.searchParams.get('platform') || '';
     const category = url.searchParams.get('category') || '';
+    const genre = url.searchParams.get('genre') || '';
     const sortBy = url.searchParams.get('sortby') || 'rating_desc'; // Default sort by rating
+
+    const genreMapping: Record<string, number> = {
+      'point-and-click': 2,
+      'fighting': 4,
+      'shooter': 5,
+      'music': 7,
+      'platform': 8,
+      'puzzle': 9,
+      'racing': 10,
+      'real-time-strategy-rts': 11,
+      'role-playing-rpg': 12,
+      'simulator': 13,
+      'sport': 14,
+      'strategy': 15,
+      'turn-based-strategy-tbs': 16,
+      'tactical': 24,
+      'hack-and-slash-beat-em-up': 25,
+      'quiz-trivia': 26,
+      'pinball': 30,
+      'adventure': 31,
+      'indie': 32,
+      'arcade': 33,
+      'visual-novel': 34,
+      'card-and-board-game': 35,
+      'moba': 36
+    };
+
+    const genreID = genreMapping[genre] || '';
 
     // Fetch the access token from your /api/getToken endpoint
     const tokenResponse = await fetch(process.env.NEXT_PUBLIC_API_URL! + '/api/getToken', { method: 'POST' });
@@ -18,7 +47,7 @@ export async function POST(request: Request) {
 
     // Construct query body
     let queryBody = `
-      fields id,name,category,rating,total_rating,cover.image_id,platforms,first_release_date;
+      fields id,name,category,rating,total_rating,cover.image_id,platforms,genres,first_release_date;
       where cover != null
     `;
 
@@ -28,6 +57,10 @@ export async function POST(request: Request) {
 
     if (category) {
       queryBody += ` & category = (${category})`;
+    }
+
+    if (genre) {
+      queryBody += ` & genres = (${genreID})`;
     }
 
     if (searchQuery) {

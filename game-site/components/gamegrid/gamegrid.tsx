@@ -108,11 +108,11 @@ const GameGrid: React.FC = () => {
   const [tempCategory, setTempCategory] = useState<string>('');
   const [tempPlatform, setTempPlatform] = useState<string>('');
 
-  const fetchGames = async (page: number, query: string, platform: string, category: string, sortBy: string) => {
+  const fetchGames = async (page: number, query: string, platform: string, category: string, genre: string, sortBy: string) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/getGames?page=${page}&limit=20&search=${encodeURIComponent(query)}&platform=${platform}&category=${category}&sortby=${sortBy}`, {
+      const response = await fetch(`/api/getGames?page=${page}&limit=20&search=${encodeURIComponent(query)}&platform=${platform}&category=${category}&genre=${genre}&sortby=${sortBy}`, {
         method: 'POST',
       });
       if (!response.ok) throw new Error('Failed to fetch games');
@@ -128,8 +128,8 @@ const GameGrid: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchGames(page, searchQuery, platform, category, sortBy);
-  }, [page, searchQuery, platform, category, sortBy]);
+    fetchGames(page, searchQuery, platform, category, genre, sortBy);
+  }, [page, searchQuery, platform, category, genre, sortBy]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -287,8 +287,29 @@ const GameGrid: React.FC = () => {
           <FormControl fullWidth margin="normal">
             <InputLabel>Genre</InputLabel>
             <Select value={tempGenre} onChange={(e) => setTempGenre(e.target.value)}>
-              <MenuItem value="">None</MenuItem>
-              {/* Add more genre options here */}
+              <MenuItem value="adventure">Adventure</MenuItem>
+              <MenuItem value="arcade">Arcade</MenuItem>
+              <MenuItem value="brawler">Brawler</MenuItem>
+              <MenuItem value="card-and-board-game">Card & Board Game</MenuItem>
+              <MenuItem value="fighting">Fighting</MenuItem>
+              <MenuItem value="indie">Indie</MenuItem>
+              <MenuItem value="moba">MOBA</MenuItem>
+              <MenuItem value="music">Music</MenuItem>
+              <MenuItem value="point-and-click">Point & Click</MenuItem>
+              <MenuItem value="shooter">Shooter</MenuItem>
+              <MenuItem value="platform">Platform</MenuItem>
+              <MenuItem value="puzzle">puzzle</MenuItem>
+              <MenuItem value="racing">Racing</MenuItem>
+              <MenuItem value="real-time-strategy-rts">Real Time Strategy (RTS)</MenuItem>
+              <MenuItem value="role-playing-rpg">Role Playing Game (RPG)</MenuItem>
+              <MenuItem value="simulator">Simulator</MenuItem>
+              <MenuItem value="sport">Sport</MenuItem>
+              <MenuItem value="strategy">Strategy</MenuItem>
+              <MenuItem value="turn-based-stategy-tbs">Turn Based Strategy (TBS)</MenuItem>
+              <MenuItem value="hack-and-slash-beat-em-up">Hack and Slash/Beat &#39;em up</MenuItem>
+              <MenuItem value="quiz-trivia">Quiz/Trivia</MenuItem>
+              <MenuItem value="pinball">Pinball</MenuItem>
+              <MenuItem value="visual-novel">Visual Novel</MenuItem>
             </Select>
           </FormControl>
 
