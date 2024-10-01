@@ -4,12 +4,14 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../app/firebase/config";
+import { useRouter } from "next/navigation";
 
 const SignUpPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' }>({ text: '', type: 'success' });
+  const router = useRouter();
 
   const [
     createUserWithEmailAndPassword,
@@ -34,12 +36,14 @@ const SignUpPage: React.FC = () => {
           setMessage({ text: "An error occurred during sign up. Please try again.", type: 'error' });
       }
     } else if (user) {
-      setMessage({ text: "Sign-up successful!", type: 'success' });
+      setMessage({ text: "Sign-up successful! Redirecting to login page...", type: 'success' });
+      setTimeout(() => {
+        router.push('/login');
+      }, 1000);
     }
-  }, [user, error]);
+  }, [user, error, router]);
 
   const validatePassword = (password: string) => {
-    // Add your custom password validation rules here
     const minLength = 6;
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumbers = /\d/.test(password);
