@@ -39,7 +39,7 @@ const LoginPage: React.FC = () => {
           </button>
         </form>
         <p>
-          Don&apos;t have an account? <Link href="/signup">Sign up here</Link>
+          Don&apos;t have an account? <Link href="/signup" style={{ color: 'blue', textDecoration: 'underline' }}>Sign up here</Link>
         </p>
       </div>
     </div>

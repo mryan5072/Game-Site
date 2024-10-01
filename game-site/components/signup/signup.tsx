@@ -120,7 +120,7 @@ const SignUpPage: React.FC = () => {
           </p>
         )}
         <p>
-          Already have an account? <Link href="/login">Login here</Link>
+          Already have an account? <Link href="/login" style={{ color: 'blue', textDecoration: 'underline' }}>Login here</Link>
         </p>
       </div>
     </div>
