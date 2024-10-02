@@ -94,6 +94,7 @@ const GameGrid: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(20);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filterOpen, setFilterOpen] = useState(false);
@@ -112,7 +113,7 @@ const GameGrid: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/getGames?page=${page}&limit=20&search=${encodeURIComponent(query)}&platform=${platform}&category=${category}&genre=${genre}&sortby=${sortBy}`, {
+      const response = await fetch(`/api/getGames?page=${page}&limit=${limit}&search=${encodeURIComponent(query)}&platform=${platform}&category=${category}&genre=${genre}&sortby=${sortBy}`, {
         method: 'POST',
       });
       if (!response.ok) throw new Error('Failed to fetch games');
@@ -129,7 +130,7 @@ const GameGrid: React.FC = () => {
 
   useEffect(() => {
     fetchGames(page, searchQuery, platform, category, genre, sortBy);
-  }, [page, searchQuery, platform, category, genre, sortBy]);
+  }, [page, searchQuery, platform, category, genre, sortBy, limit]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -188,10 +189,49 @@ const GameGrid: React.FC = () => {
             onClick={handleFilterClick}
           >
             Filter
-          </Button>       
+          </Button>
+          <FormControl
+            sx={{
+              m: 1, 
+              minWidth: 110,
+              '& .MuiInputLabel-root': {
+                color: 'white',
+              },
+              '& .MuiOutlinedInput-root': {
+                color: 'white', 
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'white', 
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'white',
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'white', 
+                },
+              },
+              '& .MuiSelect-icon': {
+                color: 'white', 
+              },
+            }}
+            variant="outlined"
+          >
+            <InputLabel>Items per page</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={limit}
+              label="Games per page" // Correct label usage
+              onChange={(e) => setLimit(Number(e.target.value))}
+            >
+              <MenuItem value={20}>20</MenuItem>
+              <MenuItem value={30}>30</MenuItem>
+              <MenuItem value={40}>40</MenuItem>
+              <MenuItem value={50}>50</MenuItem>
+              <MenuItem value={100}>100</MenuItem>
+            </Select>
+          </FormControl>
         </div>
       </Box>
-
       {loading && (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
           <CircularProgress />
