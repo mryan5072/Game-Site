@@ -4,13 +4,13 @@ import "../../app/globals.css";
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="bg-gray-800 p-4 text-white flex justify-between items-center">
-      <div className="text-2xl font-bold">Game Tracker</div>
-      <div className="flex space-x-4">
-        <Link href="/">home</Link>
-        <Link href="/about">about</Link>
-        <Link href="/mylist">my list</Link>
-        <Link href="/login">log in</Link>
+    <nav className="navbar">
+      <div className="navbar-brand">Game Tracker</div>
+      <div className="navbar-links">
+        <Link href="/" className="navbar-link">home</Link>
+        <Link href="/about" className="navbar-link">about</Link>
+        <Link href="/mylist" className="navbar-link">my list</Link>
+        <Link href="/login" className="navbar-link">log in</Link>
       </div>
     </nav>
   );
