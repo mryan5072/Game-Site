@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import {
   Pagination,
   CircularProgress,
@@ -16,12 +15,13 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
+import Link from 'next/link';
 import { styled } from '@mui/material/styles';
 import SearchBar from '../searchbar/searchbar';
 import Box from '@mui/material/Box';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import "../../app/globals.css";
-
+/*
 const GridContainer = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: 'repeat(5, 1fr)',
@@ -78,7 +78,7 @@ const GridItem = styled(Box)(({ theme }) => ({
       opacity: 1,
     },
   },
-}));
+}));*/
 
 interface Game {
   id: number;
@@ -240,48 +240,51 @@ const GameGrid: React.FC = () => {
       {error && <Typography color="error">Error: {error}</Typography>}
 
       {!loading && !error && (
-        <>
-          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-          <GridContainer>
-            {games.length === 0 ? (
-              <Typography>No games found</Typography>
-            ) : (
-              games.map((game) => (
-                <GridItem key={game.id}>
-                  <div className="cover-container">
-                    {game.cover && game.cover.image_id ? (
-                      <>
-                        <img
-                          className="cover-image"
-                          src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
-                          alt={game.name}
-                        />
-                        <div className="main-image">
-                          <img
-                            src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
-                            alt={game.name}
-                            width={225}
-                            height={300}
-                            style={{ objectFit: 'contain' }}
-                            loading="lazy"
-                            decoding="async"
-                          />
+          <>
+            <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+              <div className="grid-container">
+                {games.length === 0 ? (
+                  <Typography>No games found</Typography>
+                ) : (
+                  games.map((game) => (
+                    <div key={game.id} className="grid-item">
+                      <Link href={`/games/${game.id}`} passHref>
+                        <div className="cover-container">
+                          {game.cover && game.cover.image_id ? (
+                            <>
+                              <img
+                                className="cover-image"
+                                src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
+                                alt={game.name}
+                              />
+                              <div className="main-image">
+                                <img
+                                  src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
+                                  alt={game.name}
+                                  width={225}
+                                  height={300}
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              </div>
+                            </>
+                          ) : (
+                            <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0' }}></div>
+                          )}
+                          <div className="overlay">
+                            <Typography variant="h6" color="white" fontSize={20} align='center'>
+                              {game.name}
+                            </Typography>
+                          </div>
                         </div>
-                      </>
-                    ) : (
-                      <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0' }}></div>
-                    )}
-                    <div className="overlay">
-                      <Typography variant="h6" color="white" fontSize={20} align='center'>
-                        {game.name}
-                      </Typography>
+                      </Link>
                     </div>
-                  </div>
-                </GridItem>
-              ))
-            )}
-          </GridContainer>
-          </Box>
+                  ))
+                )}
+              </div>
+            </Box>
+          </>
+        )}
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', marginBottom: '2rem' }}>
             <Pagination
               count={totalPages}
@@ -308,9 +311,6 @@ const GameGrid: React.FC = () => {
               }}
             />
           </div>
-        </>
-      )}
-
       <Dialog open={filterOpen} onClose={handleFilterClose}>
         <DialogTitle>Filter Options</DialogTitle>
         <DialogContent>
