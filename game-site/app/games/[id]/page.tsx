@@ -13,7 +13,7 @@ interface Game {
 export default async function GameDetailsPage({ params }: { params: { id: string } }) {
   console.log('Fetching game details for ID:', params.id);
 
-  const res = await fetch(`http://localhost:3000/api/getGame?id=${params.id}`, {
+  const res = await fetch(`/api/getGame?id=${params.id}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
