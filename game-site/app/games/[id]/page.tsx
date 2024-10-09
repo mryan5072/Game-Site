@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface Game {
   id: number;
@@ -32,10 +30,6 @@ export default async function GameDetailsPage({ params }: { params: { id: string
     return gameDetails; 
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0); 
-  }, []); 
-
   const gameDetails: Game | null = await fetchGameDetails(params.id);
 
   return (
@@ -45,6 +39,7 @@ export default async function GameDetailsPage({ params }: { params: { id: string
           className="cover-image"
           src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover.image_id}.jpg`}
           alt={gameDetails.name}
+          loading="lazy"
         />
       ) : (
         <div className="cover-image"></div>

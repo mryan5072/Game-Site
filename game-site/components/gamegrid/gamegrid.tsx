@@ -161,7 +161,6 @@ const GameGrid: React.FC = () => {
         </div>
       )}
       {error && <Typography color="error">Error: {error}</Typography>}
-      <Suspense fallback={<div>Loading games...</div>}>
       {!loading && !error && (
           <>
             <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
@@ -171,41 +170,36 @@ const GameGrid: React.FC = () => {
                 ) : (
                   games.map((game) => (
                     <div key={game.id} className="grid-item">
-                    <div 
-                      className="cover-container"
-                      onMouseEnter={() => router.prefetch(`/games/${game.id}`)} // Manually prefetch on hover
-                      onClick={() => {
-                      // Optimistic UI: Show loading state immediately
-                      router.push(`/games/${game.id}`, { scroll: true });
-                      }}
-                      >
-                      {game.cover && game.cover.image_id ? (
-                        <>
-                          <img
-                            className="cover-image"
-                            src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
-                            alt={game.name}
-                          />
-                          <div className="main-image">
-                            <img
-                              src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
-                              alt={game.name}
-                              width={225}
-                              height={300}
-                              loading="lazy"
-                              decoding="async"
-                            />
+                      <Link href={`/games/${game.id}`} passHref prefetch>
+                        <div className="cover-container">
+                          {game.cover && game.cover.image_id ? (
+                            <>
+                              <img
+                                className="cover-image"
+                                src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
+                                alt={game.name}
+                              />
+                              <div className="main-image">
+                                <img
+                                  src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
+                                  alt={game.name}
+                                  width={225}
+                                  height={300}
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              </div>
+                            </>
+                          ) : (
+                            <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0' }}></div>
+                          )}
+                          <div className="overlay">
+                            <Typography variant="h6" color="white" fontSize={20} align='center'>
+                              {game.name}
+                            </Typography>
                           </div>
-                        </>
-                      ) : (
-                        <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0' }}></div>
-                      )}
-                      <div className="overlay">
-                        <Typography variant="h6" color="white" fontSize={20} align='center'>
-                          {game.name}
-                        </Typography>
-                      </div>
-                    </div>
+                        </div>
+                      </Link>
                   </div>
                   ))
                 )}
@@ -213,7 +207,6 @@ const GameGrid: React.FC = () => {
             </Box>
           </>
         )}
-        </Suspense>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', marginBottom: '2rem' }}>
             <Pagination
               count={totalPages}
