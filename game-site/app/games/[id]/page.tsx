@@ -34,17 +34,19 @@ export default async function GameDetailsPage({ params }: { params: { id: string
 
   return (
     <div className="game-details-container">
-      {gameDetails?.cover ? (
-        <img
-          className="cover-image"
-          src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover.image_id}.jpg`}
-          alt={gameDetails.name}
-          loading="lazy"
-        />
-      ) : (
-        <div className="cover-image"></div>
-      )}
-      <div className="flex flex-col">
+      <div className="cover-image-container">
+        {gameDetails?.cover ? (
+          <img
+            className="cover-image"
+            src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${gameDetails.cover.image_id}.jpg`}
+            alt={gameDetails.name}
+            loading="lazy"
+          />
+        ) : (
+          <div className="cover-image"></div>
+        )}
+      </div>
+      <div className="game-info">
         <h1 className="game-title">{gameDetails?.name}</h1>
         <p className="game-summary">{gameDetails?.summary || 'No summary available'}</p>
       </div>

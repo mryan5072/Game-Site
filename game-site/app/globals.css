@@ -27,35 +27,49 @@ body {
   height: 100%;
 }
 
-/* Center the content and style the main container */
 .game-details-container {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: flex-start;
   justify-content: center;
-  height: 100vh; 
-  overflow: auto;
-  padding: 20px; 
+  margin: 0 auto;
+  padding: 60px;
+  max-width: 1200px;
 }
 
-/* Style for the game cover image */
+.cover-image-container {
+  flex-shrink: 0;
+  margin-right: 30px;
+}
+
 .cover-image {
-  width: 300px; 
-  height: 400px; 
-  object-fit: contain; 
-  margin-right: 20px; 
-  background-color: #333;
+  width: 276px;
+  height: 367px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Style for the game title */
+.game-info {
+  flex-grow: 1;
+}
+
 .game-title {
-  font-size: 24px; 
+  font-size: 32px;
   font-weight: bold;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
 }
 
-/* Style for the game summary */
+.game-release-info {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
 .game-summary {
-  font-size: 16px; 
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 20px;
 }
 
 /* Grid Container */
@@ -376,8 +390,8 @@ body {
 
   /* Adjust cover image styles */
   .cover-image {
-    width: 100%; /* Full width */
-    height: auto; /* Auto height */
+    width: 300px; /* Full width */
+    height: 400px; /* Auto height */
   }
 
   /* Adjust main image styles */
@@ -418,8 +432,8 @@ body {
 
   /* Adjust cover image styles */
   .cover-image {
-    width: 100%; /* Full width */
-    height: auto; /* Auto height */
+    width: 150px; /* Full width */
+    height: 200px; /* Auto height */
   }
 
   /* Adjust main image styles */

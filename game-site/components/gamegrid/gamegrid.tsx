@@ -170,7 +170,7 @@ const GameGrid: React.FC = () => {
                 ) : (
                   games.map((game) => (
                     <div key={game.id} className="grid-item">
-                      <Link href={`/games/${game.id}`} passHref prefetch>
+                      <Link href={`/games/${game.id}`} passHref prefetch scroll={true}>
                         <div className="cover-container">
                           {game.cover && game.cover.image_id ? (
                             <>
