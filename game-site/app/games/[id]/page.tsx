@@ -1,5 +1,3 @@
-"use client";
-
 import React from 'react';
 
 interface Game {
@@ -15,7 +13,7 @@ interface Game {
 export default async function GameDetailsPage({ params }: { params: { id: string } }) {
   console.log('Fetching game details for ID:', params.id);
 
-  const res = await fetch(`/api/getGame?id=${params.id}`, {
+  const res = await fetch(process.env.NEXT_PUBLIC_API_URL! + `/api/getGame?id=${params.id}`, {
     method: 'POST',
   });
 
