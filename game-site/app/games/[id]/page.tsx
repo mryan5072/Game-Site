@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 
 interface Game {
@@ -15,11 +17,6 @@ export default async function GameDetailsPage({ params }: { params: { id: string
 
   const res = await fetch(`/api/getGame?id=${params.id}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ id: params.id }),
-    cache: 'no-store',
   });
 
   console.log('Response status:', res.status);
