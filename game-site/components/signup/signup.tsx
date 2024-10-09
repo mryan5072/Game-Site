@@ -81,29 +81,29 @@ const SignUpPage: React.FC = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.formContainer}>
-        <h2>Sign Up</h2>
-        <form onSubmit={handleSignUp} style={styles.form}>
+    <div className="login-container">
+      <div className="login-form-container">
+        <h2 className="loginsignup-text-color">Sign Up</h2>
+        <form onSubmit={handleSignUp} className="login-form">
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={styles.input}
+            className="login-input"
             required
           />
-          <div style={styles.passwordContainer}>
+          <div className="password-container">
             <input
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              style={styles.input}
+              className="login-input"
               required
             />
-            <p style={styles.passwordRequirements}>
-              Password must be at least 6 characters long, with a combination of letters, numbers and symbols.
+            <p className="password-requirements">
+              Password must be at least 6 characters long, with a combination of letters, numbers, and symbols.
             </p>
           </div>
           <input
@@ -111,80 +111,27 @@ const SignUpPage: React.FC = () => {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            style={styles.input}
+            className="login-input"
             required
           />
-          <button type="submit" style={styles.button} disabled={loading}>
+          <button type="submit" className="login-button" disabled={loading}>
             {loading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
         {message.text && (
-          <p style={{ color: message.type === 'error' ? 'red' : 'green' }}>
+          <p className={message.type === 'error' ? 'error-message' : 'message'}>
             {message.text}
           </p>
         )}
-        <p>
-          Already have an account? <Link href="/login" style={{ color: 'blue', textDecoration: 'underline' }}>Login here</Link>
+        <p className="loginsignup-text-color">
+          Already have an account?{" "}
+          <Link href="/login" className="signup-link">
+            Login here
+          </Link>
         </p>
       </div>
     </div>
   );
-};
-
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "100vh",
-    background: "rgb(25, 25, 25)",
-  },
-  formContainer: {
-    padding: "2rem",
-    borderRadius: "8px",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-    backgroundColor: "#fff",
-    textAlign: "center",
-    maxWidth: "400px",
-    width: "100%",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-  },
-  input: {
-    padding: "0.8rem",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-    fontSize: "1rem",
-    width: "100%",
-    boxSizing: "border-box",
-  },
-  button: {
-    padding: "0.8rem",
-    borderRadius: "4px",
-    backgroundColor: "#0070f3",
-    color: "#fff",
-    fontSize: "1rem",
-    border: "none",
-    cursor: "pointer",
-    width: "100%",
-  },
-  passwordContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    width: "100%",
-  },
-  passwordRequirements: {
-    fontSize: "0.75rem",
-    color: "#666",
-    marginTop: "0.25rem",
-    textAlign: "center",
-    lineHeight: "1.2",
-    width: "100%",
-  },
 };
 
 export default SignUpPage;
