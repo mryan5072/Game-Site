@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import {
   Pagination,
   CircularProgress,
@@ -43,7 +43,6 @@ const GameGrid: React.FC = () => {
 
   // Get current page from URL or default to 1
   const page = parseInt(searchParams.get('page') || '1', 10);
-  const limit = parseInt(searchParams.get('limit') || '20', 10);
   const searchQuery = searchParams.get('search') || '';
   const sortBy = searchParams.get('sortBy') || 'rating_desc';
   const genre = searchParams.get('genre') || '';
@@ -60,7 +59,7 @@ const GameGrid: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/getGames?page=${page}&limit=${limit}&search=${encodeURIComponent(query)}&platform=${platform}&category=${category}&genre=${genre}&sortby=${sortBy}`, {
+      const response = await fetch(`/api/getGames?page=${page}&search=${encodeURIComponent(query)}&platform=${platform}&category=${category}&genre=${genre}&sortby=${sortBy}`, {
         method: 'POST',
       });
       if (!response.ok) throw new Error('Failed to fetch games');
@@ -78,7 +77,7 @@ const GameGrid: React.FC = () => {
   useEffect(() => {
     window.scroll(0, 0);
     fetchGames(page, searchQuery, platform, category, genre, sortBy);
-  }, [page, searchQuery, platform, category, genre, sortBy, limit]);
+  }, [page, searchQuery, platform, category, genre, sortBy]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
@@ -162,7 +161,7 @@ const GameGrid: React.FC = () => {
         </div>
       )}
       {error && <Typography color="error">Error: {error}</Typography>}
-
+      <Suspense fallback={<div>Loading games...</div>}>
       {!loading && !error && (
           <>
             <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
@@ -214,6 +213,7 @@ const GameGrid: React.FC = () => {
             </Box>
           </>
         )}
+        </Suspense>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', marginBottom: '2rem' }}>
             <Pagination
               count={totalPages}

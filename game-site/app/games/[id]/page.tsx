@@ -36,7 +36,6 @@ export default async function GameDetailsPage({ params }: { params: { id: string
     window.scrollTo(0, 0); 
   }, []); 
 
-
   const gameDetails: Game | null = await fetchGameDetails(params.id);
 
   return (
