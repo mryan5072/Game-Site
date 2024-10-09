@@ -17,68 +17,11 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { styled } from '@mui/material/styles';
+import { useRouter, useSearchParams } from 'next/navigation';
 import SearchBar from '../searchbar/searchbar';
 import Box from '@mui/material/Box';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import "../../app/globals.css";
-/*
-const GridContainer = styled(Box)(({ theme }) => ({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(5, 1fr)',
-  gap: theme.spacing(2),
-  padding: theme.spacing(2),
-  justifyContent: 'center',
-  maxWidth: '1700px',
-  margin: '0 auto',
-}));
-
-const GridItem = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  overflow: 'hidden',
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[3],
-  width: '225px', // Fixed width to match the main image
-  height: '300px', // Fixed height to match the main image
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  '& .cover-image': {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    width: '100%',
-    height: '100%',
-    transform: 'translate(-50%, -50%)',
-    objectFit: 'cover',
-    filter: 'blur(10px)',
-    zIndex: 1,
-  },
-  '& .main-image': {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain', // Adjust this based on your layout needs
-    zIndex: 2,
-  },
-  '& .overlay': {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    color: '#fff',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0,
-    transition: 'opacity 0.3s',
-    zIndex: 3,
-    '&:hover': {
-      opacity: 1,
-    },
-  },
-}));*/
 
 interface Game {
   id: number;
@@ -90,24 +33,28 @@ interface Game {
 }
 
 const GameGrid: React.FC = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(20);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [searchQuery, setSearchQuery] = useState<string>('');
   const [filterOpen, setFilterOpen] = useState(false);
-  const [sortBy, setSortBy] = useState<string>('rating_desc');
-  const [genre, setGenre] = useState<string>('');
-  const [category, setCategory] = useState<string>('');
-  const [platform, setPlatform] = useState<string>('');
+
+  // Get current page from URL or default to 1
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const limit = parseInt(searchParams.get('limit') || '20', 10);
+  const searchQuery = searchParams.get('search') || '';
+  const sortBy = searchParams.get('sortBy') || 'rating_desc';
+  const genre = searchParams.get('genre') || '';
+  const category = searchParams.get('category') || '';
+  const platform = searchParams.get('platform') || '';
 
   // Temporary state variables for filters
-  const [tempSortBy, setTempSortBy] = useState<string>('desc');
-  const [tempGenre, setTempGenre] = useState<string>('');
-  const [tempCategory, setTempCategory] = useState<string>('');
-  const [tempPlatform, setTempPlatform] = useState<string>('');
+  const [tempSortBy, setTempSortBy] = useState<string>(sortBy);
+  const [tempGenre, setTempGenre] = useState<string>(genre);
+  const [tempCategory, setTempCategory] = useState<string>(category);
+  const [tempPlatform, setTempPlatform] = useState<string>(platform);
 
   const fetchGames = async (page: number, query: string, platform: string, category: string, genre: string, sortBy: string) => {
     setLoading(true);
@@ -129,20 +76,24 @@ const GameGrid: React.FC = () => {
   };
 
   useEffect(() => {
+    window.scroll(0, 0);
     fetchGames(page, searchQuery, platform, category, genre, sortBy);
   }, [page, searchQuery, platform, category, genre, sortBy, limit]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set('page', value.toString());
+    router.push(`?${newSearchParams.toString()}`, { scroll: true });
   };
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    setPage(1);
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set('search', query);
+    newSearchParams.set('page', '1');
+    router.push(`?${newSearchParams.toString()}`, { scroll: true });
   };
 
   const handleFilterClick = () => {
-    // Set temporary state variables to current filter values
     setTempSortBy(sortBy);
     setTempGenre(genre);
     setTempCategory(category);
@@ -155,12 +106,13 @@ const GameGrid: React.FC = () => {
   };
 
   const applyFilters = () => {
-    // Apply the filters using temporary state variables
-    setSortBy(tempSortBy);
-    setGenre(tempGenre);
-    setCategory(tempCategory);
-    setPlatform(tempPlatform);
-    setPage(1); // Reset to the first page when applying new filters
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set('sortBy', tempSortBy);
+    newSearchParams.set('genre', tempGenre);
+    newSearchParams.set('category', tempCategory);
+    newSearchParams.set('platform', tempPlatform);
+    newSearchParams.set('page', '1');
+    router.push(`?${newSearchParams.toString()}`, { scroll: true });
     setFilterOpen(false);
   };
 
@@ -170,11 +122,23 @@ const GameGrid: React.FC = () => {
     setTempGenre('');
     setTempCategory('');
     setTempPlatform('');
-    setSortBy('desc');
-    setGenre('');
-    setCategory('');
-    setPlatform('');
-    setPage(1); // Reset to the first page when clearing filters
+    
+    // Create a new URLSearchParams object based on the current search parameters
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+
+    // Remove the filter parameters by deleting them from the URLSearchParams
+    newSearchParams.delete('sort');
+    newSearchParams.delete('genre');
+    newSearchParams.delete('category');
+    newSearchParams.delete('platform');
+
+    // Reset the page parameter to 1
+    newSearchParams.set('page', '1');
+
+    // Push the updated URL without the filter parameters
+    router.push(`?${newSearchParams.toString()}`, { scroll: true });
+
+    // Optionally close the 
     setFilterOpen(false);
   };
 
@@ -190,46 +154,6 @@ const GameGrid: React.FC = () => {
           >
             Filter
           </Button>
-          <FormControl
-            sx={{
-              m: 1, 
-              minWidth: 110,
-              '& .MuiInputLabel-root': {
-                color: 'white',
-              },
-              '& .MuiOutlinedInput-root': {
-                color: 'white', 
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white', 
-                },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white',
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'white', 
-                },
-              },
-              '& .MuiSelect-icon': {
-                color: 'white', 
-              },
-            }}
-            variant="outlined"
-          >
-            <InputLabel>Items per page</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={limit}
-              label="Games per page" // Correct label usage
-              onChange={(e) => setLimit(Number(e.target.value))}
-            >
-              <MenuItem value={20}>20</MenuItem>
-              <MenuItem value={30}>30</MenuItem>
-              <MenuItem value={40}>40</MenuItem>
-              <MenuItem value={50}>50</MenuItem>
-              <MenuItem value={100}>100</MenuItem>
-            </Select>
-          </FormControl>
         </div>
       </Box>
       {loading && (
@@ -248,37 +172,42 @@ const GameGrid: React.FC = () => {
                 ) : (
                   games.map((game) => (
                     <div key={game.id} className="grid-item">
-                      <Link href={`/games/${game.id}`} passHref prefetch>
-                        <div className="cover-container">
-                          {game.cover && game.cover.image_id ? (
-                            <>
-                              <img
-                                className="cover-image"
-                                src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
-                                alt={game.name}
-                              />
-                              <div className="main-image">
-                                <img
-                                  src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
-                                  alt={game.name}
-                                  width={225}
-                                  height={300}
-                                  loading="lazy"
-                                  decoding="async"
-                                />
-                              </div>
-                            </>
-                          ) : (
-                            <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0' }}></div>
-                          )}
-                          <div className="overlay">
-                            <Typography variant="h6" color="white" fontSize={20} align='center'>
-                              {game.name}
-                            </Typography>
+                    <div 
+                      className="cover-container"
+                      onMouseEnter={() => router.prefetch(`/games/${game.id}`)} // Manually prefetch on hover
+                      onClick={() => {
+                      // Optimistic UI: Show loading state immediately
+                      router.push(`/games/${game.id}`, { scroll: true });
+                      }}
+                      >
+                      {game.cover && game.cover.image_id ? (
+                        <>
+                          <img
+                            className="cover-image"
+                            src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
+                            alt={game.name}
+                          />
+                          <div className="main-image">
+                            <img
+                              src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
+                              alt={game.name}
+                              width={225}
+                              height={300}
+                              loading="lazy"
+                              decoding="async"
+                            />
                           </div>
-                        </div>
-                      </Link>
+                        </>
+                      ) : (
+                        <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0' }}></div>
+                      )}
+                      <div className="overlay">
+                        <Typography variant="h6" color="white" fontSize={20} align='center'>
+                          {game.name}
+                        </Typography>
+                      </div>
                     </div>
+                  </div>
                   ))
                 )}
               </div>
