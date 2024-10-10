@@ -174,17 +174,19 @@ const GameGrid: React.FC = () => {
                         <div className="cover-container">
                           {game.cover && game.cover.image_id ? (
                             <>
-                              <img
-                                className="cover-image"
-                                src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
-                                alt={game.name}
-                              />
+                              <div>
+                                <img
+                                  className="cover-image"
+                                  src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
+                                  alt={game.name}
+                                />
+                              </div>
                               <div className="main-image">
                                 <img
                                   src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
                                   alt={game.name}
-                                  width={225}
-                                  height={300}
+                                  width={250}
+                                  height={325}
                                   loading="lazy"
                                   decoding="async"
                                 />
@@ -194,13 +196,13 @@ const GameGrid: React.FC = () => {
                             <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0' }}></div>
                           )}
                           <div className="overlay">
-                            <Typography variant="h6" color="white" fontSize={20} align='center'>
+                            <Typography variant="h6" color="white" fontSize={20} align="center">
                               {game.name}
                             </Typography>
                           </div>
                         </div>
                       </Link>
-                  </div>
+                    </div>
                   ))
                 )}
               </div>
