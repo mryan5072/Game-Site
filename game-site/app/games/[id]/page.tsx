@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, } from 'swiper/react';
+import { Scrollbar, } from 'swiper/modules';
+import Modal from 'react-modal';
 import 'swiper/css';
-import Modal from 'react-modal'; // Import the modal library
+import 'swiper/css/scrollbar';
 
 interface Game {
   id: number;
@@ -63,7 +65,6 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
 
   return (
     <div className="game-details-container">
-      {/* Cover Image and Info Section */}
       <div className="cover-image-container">
         {gameDetails.cover ? (
           <img
@@ -82,33 +83,45 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
         <p className="game-summary">{gameDetails.summary || 'No summary available'}</p>
       </div>
 
-      {/* Swiper Section */}
-      {gameDetails.screenshots && gameDetails.screenshots.length > 0 && (
-        <div className="swiper-section">
-          <h2 className="screenshots-title">Screenshots</h2>
-          <Swiper spaceBetween={20} slidesPerView={3}>
-            {gameDetails.screenshots.map((screenshot, index) => (
-              <SwiperSlide key={index}>
+      <div className="swiper-section">
+      <h2 className="screenshots-title">Screenshots</h2>
+      <div className="swiper-container">
+        <Swiper
+          spaceBetween={10}
+          slidesPerView={3}
+          modules={[Scrollbar]}
+          scrollbar={{
+            el: '.swiper-scrollbar',
+            hide: false,
+          }}
+          className="mediaSwiper"
+        >
+          {gameDetails?.screenshots?.map((screenshot, index) => (
+            <SwiperSlide key={index}>
+              <div className="image-wrapper">
                 <img
                   src={`https://images.igdb.com/igdb/image/upload/t_1080p/${screenshot.image_id}.jpg`}
                   alt={`Screenshot ${index + 1}`}
                   className="screenshot-image"
                   loading="lazy"
-                  onClick={() => openModal(`https://images.igdb.com/igdb/image/upload/t_1080p/${screenshot.image_id}.jpg`)} // Open modal on click
+                  onClick={() => openModal(`https://images.igdb.com/igdb/image/upload/t_1080p/${screenshot.image_id}.jpg`)}
                 />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      )}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <div 
+          className="swiper-scrollbar"
+        ></div>
+      </div>
+    </div>
 
-      {/* Modal for Full-Size Image */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Full Size Image"
-        className="modal" // You can add your custom styles
-        overlayClassName="overlay" // Custom overlay styles
+        className="modal"
+        overlayClassName="overlay"
       >
         <button onClick={closeModal} className="close-button">&times;</button>
         {selectedImage && (
