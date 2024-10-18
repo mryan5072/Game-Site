@@ -1,16 +1,33 @@
 "use client";
+
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../app/firebase/config";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Placeholder for login logic
-    console.log("Email:", email);
-    console.log("Password:", password);
+    setError("");
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("Logged in successfully");
+      router.push('/'); 
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+      console.error("Login error:", error);
+    }
   };
 
   return (
@@ -34,6 +51,7 @@ const LoginPage: React.FC = () => {
             className="login-input"
             required
           />
+          {error && <p className="error-message">{error}</p>}
           <button type="submit" className="login-button">
             Login
           </button>

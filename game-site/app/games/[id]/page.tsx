@@ -1,11 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Swiper, SwiperSlide, } from 'swiper/react';
-import { Scrollbar, } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Scrollbar } from 'swiper/modules';
 import Modal from 'react-modal';
 import 'swiper/css';
 import 'swiper/css/scrollbar';
+import Rating from '@mui/material/Rating';
+import Box from '@mui/material/Box';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { auth, firestore } from '../../firebase/config';
 
 interface Game {
   id: number;
@@ -24,27 +28,50 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [rating, setRating] = useState<number | null>(null); // State to hold rating
+  const [userUID, setUserUID] = useState<string | null>(null);
 
+  // Get user's UID
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        setUserUID(user.uid); // Set the user's UID
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Fetch the game's details
   useEffect(() => {
     const fetchGameDetails = async (id: string) => {
       const res = await fetch(process.env.NEXT_PUBLIC_API_URL! + `/api/getGame?id=${id}`, {
         method: 'POST',
       });
-
       if (!res.ok) {
         console.error('Error fetching game details:', res.statusText);
         setLoading(false);
-        return null; 
+        return null;
       }
-
       const gameDetails: Game = await res.json();
       setGameDetails(gameDetails);
       setLoading(false);
     };
-
     fetchGameDetails(params.id);
   }, [params.id]);
 
+  useEffect(() => {
+    const fetchUserRating = async () => {
+      if (userUID && gameDetails) {
+        const ratingDoc = await getDoc(doc(firestore, "individualGameRatings", userUID, "ratings", gameDetails.id.toString()));
+        if (ratingDoc.exists()) {
+          setRating(ratingDoc.data().rating);
+        }
+      }
+    };
+    fetchUserRating();
+  }, [userUID, gameDetails]);
+
+  // Open and close modal
   const openModal = (imageSrc: string) => {
     setSelectedImage(imageSrc);
     setModalOpen(true);
@@ -53,6 +80,21 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
   const closeModal = () => {
     setModalOpen(false);
     setSelectedImage(null);
+  };
+
+  const handleRatingChange = async (newValue: number | null) => {
+    setRating(newValue);
+    if (newValue !== null && userUID && gameDetails) {
+      try {
+        await setDoc(doc(firestore, "individualGameRatings", userUID, "ratings", gameDetails.id.toString()), {
+          gameID: gameDetails.id,
+          rating: newValue,
+        });
+        console.log("Rating saved successfully!");
+      } catch (error) {
+        console.error("Error saving rating:", error);
+      }
+    }
   };
 
   if (loading) {
@@ -83,38 +125,48 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
         <p className="game-summary">{gameDetails.summary || 'No summary available'}</p>
       </div>
 
-      <div className="swiper-section">
-      <h2 className="screenshots-title">Screenshots</h2>
-      <div className="swiper-container">
-        <Swiper
-          spaceBetween={10}
-          slidesPerView={3}
-          modules={[Scrollbar]}
-          scrollbar={{
-            el: '.swiper-scrollbar',
-            hide: false,
-          }}
-          className="mediaSwiper"
-        >
-          {gameDetails?.screenshots?.map((screenshot, index) => (
-            <SwiperSlide key={index}>
-              <div className="image-wrapper">
-                <img
-                  src={`https://images.igdb.com/igdb/image/upload/t_1080p/${screenshot.image_id}.jpg`}
-                  alt={`Screenshot ${index + 1}`}
-                  className="screenshot-image"
-                  loading="lazy"
-                  onClick={() => openModal(`https://images.igdb.com/igdb/image/upload/t_1080p/${screenshot.image_id}.jpg`)}
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <div 
-          className="swiper-scrollbar"
-        ></div>
+      <div className="game-rating">
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <h2>Rate this game:</h2>
+          <Rating
+            name="game-rating"
+            value={rating}
+            onChange={(event, newValue) => handleRatingChange(newValue)}
+            precision={0.5}
+          />
+        </Box>
       </div>
-    </div>
+
+      <div className="swiper-section">
+        <h2 className="screenshots-title">Screenshots</h2>
+        <div className="swiper-container">
+          <Swiper
+            spaceBetween={10}
+            slidesPerView={3}
+            modules={[Scrollbar]}
+            scrollbar={{
+              el: '.swiper-scrollbar',
+              hide: false,
+            }}
+            className="mediaSwiper"
+          >
+            {gameDetails?.screenshots?.map((screenshot, index) => (
+              <SwiperSlide key={index}>
+                <div className="image-wrapper">
+                  <img
+                    src={`https://images.igdb.com/igdb/image/upload/t_1080p/${screenshot.image_id}.jpg`}
+                    alt={`Screenshot ${index + 1}`}
+                    className="screenshot-image"
+                    loading="lazy"
+                    onClick={() => openModal(`https://images.igdb.com/igdb/image/upload/t_1080p/${screenshot.image_id}.jpg`)}
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <div className="swiper-scrollbar"></div>
+        </div>
+      </div>
 
       <Modal
         isOpen={isModalOpen}
