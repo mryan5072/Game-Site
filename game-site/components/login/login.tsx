@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../app/firebase/config";
 
@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("Logged in successfully");
-      router.push('/'); 
+      router.push("/");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -31,35 +31,45 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-form-container">
-        <h2 className="loginsignup-text-color">Login</h2>
-        <form onSubmit={handleLogin} className="login-form">
+    <div className="userCredentialsPrompt-container">
+      <div className="userCredentialsPrompt-form-container">
+        <h2 className="userCredentialsPrompt-text-color">Login</h2>
+        <form onSubmit={handleLogin} className="userCredentialsPrompt-form">
           <input
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-            className="login-input"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setEmail(e.target.value)
+            }
+            className="userCredentialsPrompt-input"
             required
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-            className="login-input"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
+            className="userCredentialsPrompt-input"
             required
           />
           {error && <p className="error-message">{error}</p>}
-          <button type="submit" className="login-button">
+          <button type="submit" className="userCredentialsPrompt-button">
             Login
           </button>
         </form>
-        <p className="loginsignup-text-color">
+        <p className="userCredentialsPrompt-text-color">
           Don&apos;t have an account?{" "}
           <Link href="/signup" className="signup-link">
             Sign up here
+          </Link>
+        </p>
+        <p className="userCredentialsPrompt-text-color">
+          Forgot your password?{" "}
+          <Link href="/forgot" className="signup-link">
+            Reset password
           </Link>
         </p>
       </div>
