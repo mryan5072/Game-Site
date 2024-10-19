@@ -48,7 +48,7 @@ const SignUpPage: React.FC = () => {
       }
     } else if (user) {
       setMessage({
-        text: "Sign-up successful! Redirecting to userCredentialsPrompt page...",
+        text: "Sign-up successful! Redirecting to login page...",
         type: "success",
       });
       setTimeout(() => {

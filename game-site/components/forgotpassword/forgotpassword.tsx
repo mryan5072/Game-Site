@@ -1,36 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../app/firebase/config";
 
 const ForgotPasswordPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [message, setMessage] = useState<{
-    text: string;
-    type: "success" | "error";
-  }>({ text: "", type: "success" });
+  const [message, setMessage] = useState<{ text: string; type: "success" | "error" }>({ text: "", type: "success" });
   const router = useRouter();
 
   const handleForgot = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
     try {
       await sendPasswordResetEmail(auth, email);
-      setMessage({
-        text: "Password reset email successfully sent, if an account with that email was found.",
-        type: "success",
-      });
+      setMessage({ text: "Email is sent if the acccount exists! Please check your inbox and spam.", type: "success" });
       setTimeout(() => {
         router.push("/login");
-      }, 2000);
+      }, 3000);
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message);
+        setMessage({ text: error.message, type: "error" });
       } else {
-        setError("An unexpected error occurred");
+        setMessage({ text: "An unexpected error occurred.", type: "error" });
       }
-      console.error("Reset password error:", error);
     }
   };
 
