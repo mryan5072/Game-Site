@@ -178,6 +178,10 @@ body {
   opacity: 1;
 }
 
+.pageLimitToggle {
+  background-color: #ffffff;
+}
+
 .overlay {
   position: absolute;
   top: 0;

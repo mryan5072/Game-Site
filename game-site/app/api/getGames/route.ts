@@ -2,7 +2,7 @@ export async function POST(request: Request) {
   try {
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') || '1');
-    const limit = parseInt(url.searchParams.get('limit') || '20');
+    const limit = parseInt(url.searchParams.get('limit') || 20);
     const searchQuery = url.searchParams.get('search') || '';
     const platformId = url.searchParams.get('platform') || '';
     const category = url.searchParams.get('category') || '';
@@ -36,16 +36,12 @@ export async function POST(request: Request) {
     };
 
     const genreID = genreMapping[genre] || '';
-
-    // Fetch the access token from your /api/getToken endpoint
     const tokenResponse = await fetch(process.env.NEXT_PUBLIC_API_URL! + '/api/getToken', { method: 'POST' });
     const tokenData = await tokenResponse.json();
     const accessToken = tokenData.access_token;
 
-    // Define the URL for the IGDB API endpoint for games
     const gamesUrl = 'https://api.igdb.com/v4/games';
 
-    // Construct query body
     let queryBody = `
       fields id,name,category,rating,total_rating,cover.image_id,platforms,genres,first_release_date;
       where cover != null
