@@ -2,7 +2,7 @@ export async function POST(request: Request) {
   try {
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') || '1');
-    const limit = parseInt(url.searchParams.get('limit') || 20);
+    const limitString = url.searchParams.get('limit') || '20'; // Accept limit as a string
     const searchQuery = url.searchParams.get('search') || '';
     const platformId = url.searchParams.get('platform') || '';
     const category = url.searchParams.get('category') || '';
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       }
     }
 
-    queryBody += `; limit ${limit}; offset ${(page - 1) * limit};`;
+    queryBody += `; limit ${limitString}; offset ${(page - 1) * parseInt(limitString)};`; // Use limitString and convert offset accordingly
 
     // Fetch games with expanded cover data
     const response = await fetch(gamesUrl, {
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
 
     const games = await response.json();
     const totalGames = parseInt(response.headers.get('x-count') || '0');
-    const totalPages = Math.ceil(totalGames / limit);
+    const totalPages = Math.ceil(totalGames / parseInt(limitString)); // Calculate total pages based on limitString
 
     console.log('Request Body:', queryBody);
     console.log('API Response:', games);

@@ -23,6 +23,7 @@ import SearchBar from "../searchbar/searchbar";
 import Box from "@mui/material/Box";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import "../../app/globals.css";
+import { query } from "firebase/firestore";
 
 interface Game {
   id: number;
@@ -55,15 +56,7 @@ const GameGrid: React.FC = () => {
   const [tempCategory, setTempCategory] = useState<string>(category);
   const [tempPlatform, setTempPlatform] = useState<string>(platform);
 
-  const fetchGames = async (
-    page: number,
-    query: string,
-    platform: string,
-    category: string,
-    genre: string,
-    sortBy: string,
-    limit: string
-  ) => {
+  const fetchGames = async (query: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -89,7 +82,7 @@ const GameGrid: React.FC = () => {
 
   useEffect(() => {
     window.scroll(0, 0);
-    fetchGames(page, searchQuery, platform, category, genre, sortBy, limit);
+    fetchGames(searchQuery);
   }, [page, searchQuery, platform, category, genre, sortBy, limit]);
 
   const handlePageChange = (
