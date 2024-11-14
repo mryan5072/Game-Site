@@ -144,7 +144,7 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
               <Chip 
                 key={index} 
                 label={platformMapping[platformId]?.name || "Unknown Platform"}
-                icon={platformMapping[platformId]?.icon || <GiConsoleController />}
+                icon={(platformMapping[platformId]?.icon as React.ReactElement) || <GiConsoleController />}
                 color="primary" 
                 variant="filled" 
                 className="platform-name"

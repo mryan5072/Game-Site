@@ -43,7 +43,7 @@
     "@types/react-modal": "^3.16.3",
     "axios": "^1.7.5",
     "eslint": "^8.57.1",
-    "eslint-config-next": "^14.2.13",
+    "eslint-config-next": "^14.2.18",
     "eslint-plugin-react": "^7.37.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "follow-redirects": ">=1.15.6",
