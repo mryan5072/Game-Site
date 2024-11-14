@@ -1,5 +1,3 @@
-// components/SearchBar.tsx
-
 import React, { useState } from 'react';
 import { TextField, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -37,6 +35,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
+        sx={{
+          // Change the label color (the "Search" text above the field)
+          '& .MuiInputLabel-root': {
+            color: 'white', // Change this to your desired color
+          },
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: 'white', // Change this to your desired focused color
+          },
+          // Change the input text color
+          '& .MuiInputBase-input': {
+            color: 'white', // Change this to your desired color
+          },
+        }}
         InputProps={{
           endAdornment: (
             <>
@@ -51,23 +62,20 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             </>
           ),
           sx: {
-            backgroundColor: 'white',
-            '& .MuiInputBase-input': {
-              color: 'black',
+            backgroundColor: 'rgb(25, 25, 25)',
+            // Change the outline color
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'white', // Change this to your desired color
             },
-            '& .MuiInputLabel-root': {
-              color: 'black',
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'white', // Change this to your desired hover color
             },
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: 'black',
-              },
-              '&:hover fieldset': {
-                borderColor: 'black',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: 'black',
-              },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'white', // Change this to your desired focused color
+            },
+            // You can also change the icon colors
+            '& .MuiSvgIcon-root': {
+              color: 'white', // Change this to your desired icon color
             },
           },
         }}
