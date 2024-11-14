@@ -13,6 +13,7 @@ import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, firestore } from '../../firebase/config';
 import platformMapping from '../../../utils/platformMapping';
 import { CircularProgress } from '@mui/material';
+import { GiConsoleController } from 'react-icons/gi';
 
 interface Game {
   id: number;
@@ -143,7 +144,7 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
               <Chip 
                 key={index} 
                 label={platformMapping[platformId]?.name || "Unknown Platform"}
-                icon={platformMapping[platformId]?.icon}
+                icon={platformMapping[platformId]?.icon || <GiConsoleController />}
                 color="primary" 
                 variant="filled" 
                 className="platform-name"
