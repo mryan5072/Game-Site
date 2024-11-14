@@ -19,7 +19,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
   const handleClear = () => {
     setQuery('');
-    onSearch(''); // Clear search results when query is cleared
+    onSearch('');
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -29,7 +29,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <div style={{ marginTop: '30px' }} className="flex justify-center my-6"> {/* Adjusted margin */}
+    <div style={{ marginTop: '30px' }} className="flex justify-center my-6">
       <TextField
         label="Search"
         variant="outlined"
