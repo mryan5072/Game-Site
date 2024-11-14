@@ -7,6 +7,7 @@ import Modal from 'react-modal';
 import 'swiper/css';
 import 'swiper/css/scrollbar';
 import Rating from '@mui/material/Rating';
+import StarPurple500Icon from '@mui/icons-material/StarPurple500';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
@@ -159,10 +160,12 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <h2>Rate this game:</h2>
           <Rating
-            name="game-rating"
+            name="game-rating-stars"
             value={rating}
             onChange={(event, newValue) => handleRatingChange(newValue)}
             precision={0.5}
+            emptyIcon={<StarPurple500Icon style={{ opacity: 0.55 }} fontSize="inherit" />}
+            className="custom-rating"
           />
         </Box>
       </div>

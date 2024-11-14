@@ -58,6 +58,14 @@ body {
   font-size: 16px;
 }
 
+.custom-rating .MuiRating-iconFilled {
+  color: #b938f5;
+}
+
+.custom-rating .MuiRating-iconEmpty {
+  color: #b938f5;
+}
+
 .swiper-section {
   width: 100%;
   max-width: 900px;
