@@ -61,10 +61,9 @@ body {
 .swiper-section {
   width: 100%;
   max-width: 900px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
-/* Grid Container */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -114,7 +113,31 @@ body {
   transform: scale(1.05);
 }
 
-/* Grid Item */
+.game-platforms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.game-platforms .platform-name {
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #b938f5;
+}
+
+svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* prevents the global svg styles from affecting CircularProgress */
+.MuiCircularProgress-root svg {
+  width: auto;
+  height: auto;
+}
+
 .grid-item {
   position: relative;
   overflow: auto;
@@ -130,32 +153,20 @@ body {
 .grid-item .cover-container .cover-image {
   position: absolute;
   top: 0;
-  /* Set to 0 to start from the top */
   left: 0;
-  /* Set to 0 to start from the left */
   width: 100%;
-  /* Full width */
   height: 100%;
-  /* Full height */
   object-fit: cover;
-  /* Ensure cover image fills the container */
   filter: blur(10px);
-  /* Apply blur */
   z-index: 1;
-  /* Place below the main image */
 }
 
 .grid-item .cover-container .main-image {
   position: relative;
-  /* Relative positioning to maintain stacking context */
   width: 100%;
-  /* Full width */
   height: 100%;
-  /* Full height */
   object-fit: contain;
-  /* Show full image without cutting off */
   z-index: 2;
-  /* Place above the cover image */
 }
 
 .grid-item .overlay {
@@ -467,33 +478,23 @@ body {
 
   .grid-container {
     grid-template-columns: repeat(4, 1fr);
-    /* 3 columns on mobile */
     gap: 8px;
-    /* Adjust gap for mobile */
     padding: 8px;
-    /* Adjust padding for mobile */
   }
 
-  /* Adjust grid item dimensions for mobile */
   .grid-item {
     width: 100%;
-    /* Full width on mobile */
     height: auto;
-    /* Auto height for flexibility */
   }
 
-  /* Adjust game title and summary */
   .game-title {
     font-size: 20px;
-    /* Smaller font size on mobile */
   }
 
   .game-summary {
     font-size: 14px;
-    /* Smaller font size on mobile */
   }
 
-  /* Adjust overlay styles */
   .overlay {
     font-size: 14px;
   }
@@ -503,55 +504,39 @@ body {
 
   .grid-container {
     grid-template-columns: repeat(4, 1fr);
-    /* 4 columns on mobile */
     gap: 8px;
-    /* Adjust gap for mobile */
     padding: 8px;
-    /* Adjust padding for mobile */
   }
 
-  /* Adjust grid item dimensions for mobile */
   .grid-item {
     width: 100%;
-    /* Full width on mobile */
     height: auto;
-    /* Auto height for flexibility */
   }
 
-  /* Adjust cover image styles */
   .cover-image {
     width: 150px;
-    /* Full width */
     height: 200px;
-    /* Auto height */
   }
 
   .cover-container- {
     overflow-y: hidden;
   }
 
-  /* Adjust main image styles */
   .main-image {
     width: 100%;
-    /* Full width */
     height: auto;
-    /* Auto height */
     object-fit: contain;
-    /* Maintain aspect ratio */
   }
 
-  /* Adjust game title and summary */
+
   .game-title {
     font-size: 20px;
-    /* Smaller font size on mobile */
   }
 
   .game-summary {
     font-size: 14px;
-    /* Smaller font size on mobile */
   }
 
-  /* Adjust overlay styles */
   .overlay {
     font-size: 14px;
   }

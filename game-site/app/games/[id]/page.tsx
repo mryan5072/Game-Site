@@ -8,8 +8,11 @@ import 'swiper/css';
 import 'swiper/css/scrollbar';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, firestore } from '../../firebase/config';
+import platformMapping from '../../../utils/platformMapping';
+import { CircularProgress } from '@mui/material';
 
 interface Game {
   id: number;
@@ -18,6 +21,7 @@ interface Game {
     image_id: string;
   };
   summary?: string;
+  platforms?: number[];
   screenshots?: {
     image_id: string;
   }[];
@@ -28,20 +32,18 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [rating, setRating] = useState<number | null>(null); // State to hold rating
+  const [rating, setRating] = useState<number | null>(null);
   const [userUID, setUserUID] = useState<string | null>(null);
 
-  // Get user's UID
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        setUserUID(user.uid); // Set the user's UID
+        setUserUID(user.uid);
       }
     });
     return () => unsubscribe();
   }, []);
 
-  // Fetch the game's details
   useEffect(() => {
     const fetchGameDetails = async (id: string) => {
       const res = await fetch(process.env.NEXT_PUBLIC_API_URL! + `/api/getGame?id=${id}`, {
@@ -98,7 +100,16 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+    }}
+  >
+    <CircularProgress />
+  </div>
   }
 
   if (!gameDetails) {
@@ -123,6 +134,24 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
       <div className="game-info">
         <h1 className="game-title">{gameDetails.name}</h1>
         <p className="game-summary">{gameDetails.summary || 'No summary available'}</p>
+        
+        <div className="game-platforms">
+          <h2>Available on:</h2>
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+            {gameDetails.platforms?.map((platformId, index) => (
+              <div className='chip-container'>
+              <Chip 
+                key={index} 
+                label={platformMapping[platformId]?.name || "Unknown Platform"}
+                icon={platformMapping[platformId]?.icon}
+                color="primary" 
+                variant="filled" 
+                className="platform-name"
+              />
+              </div>
+            ))}
+          </Box>
+        </div>
       </div>
 
       <div className="game-rating">
