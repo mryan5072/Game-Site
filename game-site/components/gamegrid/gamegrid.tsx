@@ -23,7 +23,6 @@ import SearchBar from "../searchbar/searchbar";
 import Box from "@mui/material/Box";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import "../../app/globals.css";
-import { query } from "firebase/firestore";
 
 interface Game {
   id: number;
@@ -183,7 +182,7 @@ const GameGrid: React.FC = () => {
             <ToggleButton value="80">80</ToggleButton>
           </ToggleButtonGroup>
         </div>
-      </Box>
+        </Box>
       {loading && (
         <div
           style={{
@@ -218,13 +217,13 @@ const GameGrid: React.FC = () => {
                             <div>
                               <img
                                 className="cover-image"
-                                src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
+                                src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg`}
                                 alt={game.name}
                               />
                             </div>
                             <div className="main-image">
                               <img
-                                src={`https://images.igdb.com/igdb/image/upload/t_cover_big_2x/${game.cover.image_id}.jpg`}
+                                src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg`}
                                 alt={game.name}
                                 width={250}
                                 height={325}
