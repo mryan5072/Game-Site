@@ -330,7 +330,7 @@ const GameGrid: React.FC = () => {
               <MenuItem value="point-and-click">Point & Click</MenuItem>
               <MenuItem value="shooter">Shooter</MenuItem>
               <MenuItem value="platform">Platform</MenuItem>
-              <MenuItem value="puzzle">puzzle</MenuItem>
+              <MenuItem value="puzzle">Puzzle</MenuItem>
               <MenuItem value="racing">Racing</MenuItem>
               <MenuItem value="real-time-strategy-rts">
                 Real Time Strategy (RTS)
