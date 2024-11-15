@@ -10,7 +10,7 @@ import Rating from '@mui/material/Rating';
 import StarPurple500Icon from '@mui/icons-material/StarPurple500';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { auth, firestore } from '../../firebase/config';
 import platformMapping from '../../../utils/platformMapping';
 import { CircularProgress } from '@mui/material';
@@ -35,6 +35,7 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [rating, setRating] = useState<number | null>(null);
+  const [totalRating, setTotalRating] = useState<number | null>(null);
   const [userUID, setUserUID] = useState<string | null>(null);
 
   useEffect(() => {
@@ -75,7 +76,22 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
     fetchUserRating();
   }, [userUID, gameDetails]);
 
-  // Open and close modal
+  useEffect(() => {
+    const fetchTotalRating = async () => {
+      if (gameDetails) {
+        const totalRatingDoc = await getDoc(doc(firestore, "totalGameRatings", gameDetails.id.toString()));
+        if (totalRatingDoc.exists()) {
+          const data = totalRatingDoc.data();
+          const averageRating = data.totalRating / data.numberOfRatings;
+          setTotalRating(averageRating);
+        } else {
+          setTotalRating(null);
+        }
+      }
+    };
+    fetchTotalRating();
+  }, [gameDetails]);  
+
   const openModal = (imageSrc: string) => {
     setSelectedImage(imageSrc);
     setModalOpen(true);
@@ -87,17 +103,89 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
   };
 
   const handleRatingChange = async (newValue: number | null) => {
-    setRating(newValue);
-    if (newValue !== null && userUID && gameDetails) {
-      try {
-        await setDoc(doc(firestore, "individualGameRatings", userUID, "ratings", gameDetails.id.toString()), {
+    if (!userUID || !gameDetails) return;
+  
+    const gameId = gameDetails.id.toString();
+    const individualRatingRef = doc(firestore, "individualGameRatings", userUID, "ratings", gameId);
+    const totalRatingRef = doc(firestore, "totalGameRatings", gameId);
+    let currentRating = rating; // store current rating before any changes
+  
+    try {
+      // get the users previous rating if it exists
+      const previousRatingDoc = await getDoc(individualRatingRef);
+      const previousRating = previousRatingDoc.exists() ? previousRatingDoc.data().rating : null;
+  
+      // get the current total ratings
+      const totalRatingDoc = await getDoc(totalRatingRef);
+      const totalRatingData = totalRatingDoc.exists() 
+        ? totalRatingDoc.data() 
+        : { totalRating: 0, numberOfRatings: 0 };
+  
+      // update local state early
+      setRating(newValue);
+  
+      if (newValue === null) {
+        // user is removing their rating
+        if (previousRating !== null) {
+          // delete individual rating
+          await deleteDoc(individualRatingRef);
+          
+          if (totalRatingDoc.exists()) {
+            if (totalRatingData.numberOfRatings > 1) {
+              await updateDoc(totalRatingRef, {
+                totalRating: totalRatingData.totalRating - previousRating,
+                numberOfRatings: totalRatingData.numberOfRatings - 1
+              });
+              setTotalRating((totalRatingData.totalRating - previousRating) / (totalRatingData.numberOfRatings - 1));
+            } else {
+              // if this was the last rating
+              await deleteDoc(totalRatingRef);
+              setTotalRating(null);
+            }
+          }
+        }
+      } else {
+        // user is adding or updating their rating
+        await setDoc(individualRatingRef, {
           gameID: gameDetails.id,
           rating: newValue,
+          timestamp: new Date().toISOString()
         });
-        console.log("Rating saved successfully!");
-      } catch (error) {
-        console.error("Error saving rating:", error);
+  
+        if (!totalRatingDoc.exists()) {
+          // if its the games first rating
+          await setDoc(totalRatingRef, {
+            totalRating: newValue,
+            numberOfRatings: 1
+          });
+          setTotalRating(newValue);
+        } else {
+          if (previousRating === null) {
+            // adding new rating to existing total
+            const newTotal = totalRatingData.totalRating + newValue;
+            const newCount = totalRatingData.numberOfRatings + 1;
+            await setDoc(totalRatingRef, {
+              totalRating: newTotal,
+              numberOfRatings: newCount
+            });
+            setTotalRating(newTotal / newCount);
+          } else {
+            // updating existing rating
+            const newTotal = totalRatingData.totalRating - previousRating + newValue;
+            await setDoc(totalRatingRef, {
+              totalRating: newTotal,
+              numberOfRatings: totalRatingData.numberOfRatings
+            });
+            setTotalRating(newTotal / totalRatingData.numberOfRatings);
+          }
+        }
       }
+  
+      console.log("Rating updated successfully!");
+    } catch (error) {
+      console.error("Error updating rating:", error);
+      setRating(currentRating);
+      throw error;
     }
   };
 
@@ -154,6 +242,20 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
             ))}
           </Box>
         </div>
+      </div>
+
+      <div className="total-game-rating">
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <h2>Average user rating:</h2>
+          <Rating
+            name="total-game-rating-stars"
+            value={totalRating}
+            precision={0.5}
+            emptyIcon={<StarPurple500Icon style={{ opacity: 0.55 }} fontSize="inherit" />}
+            className="custom-rating"
+            readOnly
+          />
+        </Box>
       </div>
 
       <div className="game-rating">
