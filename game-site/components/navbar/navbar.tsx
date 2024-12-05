@@ -8,7 +8,7 @@ import { auth } from '../../app/firebase/config';
 import "../../app/globals.css";
 import { Menu, MenuItem, Avatar, Tooltip, IconButton, Divider, Typography, Box, ListItemIcon } from '@mui/material';
 import LoginModal from '../login/login';
-import ForgotModal from '../forgotPassword/forgotPassword';
+import ForgotModal from '../forgotpassword/forgotpassword';
 import SignUpModal from '../signup/signup';
 
 const Navbar: React.FC = () => {
