@@ -1,12 +1,22 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import { Modal, Box, Typography, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../app/firebase/config";
-import { useRouter } from "next/navigation";
 
-const SignUpPage: React.FC = () => {
+interface SignUpModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onLoginClick: () => void;
+}
+
+const SignUpModal: React.FC<SignUpModalProps> = ({
+  isOpen,
+  onClose,
+  onLoginClick,
+}) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -14,8 +24,6 @@ const SignUpPage: React.FC = () => {
     text: string;
     type: "success" | "error";
   }>({ text: "", type: "success" });
-  const router = useRouter();
-
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
 
@@ -48,14 +56,11 @@ const SignUpPage: React.FC = () => {
       }
     } else if (user) {
       setMessage({
-        text: "Sign-up successful! Redirecting to login page...",
+        text: "Sign-up successful! You can now log in.",
         type: "success",
       });
-      setTimeout(() => {
-        router.push("/login");
-      }, 2000);
     }
-  }, [user, error, router]);
+  }, [user, error]);
 
   const validatePassword = (password: string) => {
     const minLength = 6;
@@ -96,11 +101,76 @@ const SignUpPage: React.FC = () => {
     }
   };
 
+  const handleClose = () => {
+    // Reset state when modal is closed
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setMessage({ text: "", type: "success" });
+    onClose();
+  };
+
+  const modalStyle = {
+    position: "absolute" as const,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "100%",
+    maxWidth: "400px",
+    bgcolor: "#fff",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+    borderRadius: "8px",
+    p: 4,
+    outline: "none",
+  };
+
   return (
-    <div className="userCredentialsPrompt-container">
-      <div className="userCredentialsPrompt-form-container">
-        <h2 className="userCredentialsPrompt-text-color">Sign Up</h2>
-        <form onSubmit={handleSignUp} className="userCredentialsPrompt-form">
+    <Modal
+      open={isOpen}
+      onClose={handleClose}
+      aria-labelledby="sign-up-modal-title"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(25, 25, 25, 0.9)",
+      }}
+    >
+      <Box sx={modalStyle}>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+
+        <Typography
+          id="sign-up-modal-title"
+          variant="h6"
+          component="h2"
+          sx={{
+            textAlign: "center",
+            mb: 3,
+            color: "#1a1a1a",
+          }}
+        >
+          Sign Up
+        </Typography>
+
+        <form
+          onSubmit={handleSignUp}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
           <input
             type="email"
             placeholder="Email"
@@ -140,19 +210,27 @@ const SignUpPage: React.FC = () => {
           </button>
         </form>
         {message.text && (
-          <p className={message.type === "error" ? "error-message" : "message"}>
+          <Typography
+            sx={{
+              marginTop: "1rem",
+              textAlign: "center",
+              color: message.type === "success" ? "green" : "red",
+              fontSize: "0.9rem",
+            }}
+          >
             {message.text}
-          </p>
+          </Typography>
         )}
-        <p className="userCredentialsPrompt-text-color">
-          Already have an account?{" "}
-          <Link href="/login" className="signup-link">
-            Login here
-          </Link>
-        </p>
-      </div>
-    </div>
+        <div className="signup-login-forgot-link">
+          <p>
+            <button onClick={onLoginClick} className="signup-link">
+              Already have an account? Login here!
+            </button>
+          </p>
+        </div>
+      </Box>
+    </Modal>
   );
 };
 
-export default SignUpPage;
+export default SignUpModal;

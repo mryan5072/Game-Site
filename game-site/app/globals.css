@@ -301,6 +301,11 @@ svg {
   text-decoration: underline;
 }
 
+.signup-login-forgot-link {
+  text-align: center;
+  padding-top: 10px;
+}
+
 .userCredentialsPrompt-form-container {
   padding: 2rem;
   border-radius: 8px;
@@ -341,24 +346,33 @@ svg {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
   background-color: rgb(36, 25, 78);
+  color: white;
+  padding: 1rem;
 }
 
-.navbar .navbar-title-link {
-  font-size: 24px;
+.navbar-brand {
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
 .navbar-links {
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
 
-.navbar a {
-  margin: 0 10px;
-  text-decoration: none;
-  color: #ffffff;
+.navbar-link-button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.user-container {
+  display: flex;
+  align-items: center;
 }
 
 .modal {
@@ -401,15 +415,6 @@ svg {
   cursor: pointer;
   background: none;
   border: none;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-}
-
-.user-info .navbar-link {
-  margin-right: 10px;
 }
 
 .sign-out-button {

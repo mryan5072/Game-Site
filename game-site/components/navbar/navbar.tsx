@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -6,10 +7,16 @@ import { User, signOut } from 'firebase/auth';
 import { auth } from '../../app/firebase/config';
 import "../../app/globals.css";
 import { Menu, MenuItem, Avatar, Tooltip, IconButton, Divider, Typography, Box, ListItemIcon } from '@mui/material';
+import LoginModal from '../login/login';
+import ForgotModal from '../forgotPassword/forgotPassword';
+import SignUpModal from '../signup/signup';
 
 const Navbar: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
+  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
   const router = useRouter();
   const username = user?.email?.split("@", 1)[0];
   const open = Boolean(anchorEl);
@@ -45,10 +52,10 @@ const Navbar: React.FC = () => {
         <Link href="/" className="navbar-title-link">Game Tracker</Link>
       </div>
       <div className="navbar-links">
-        <Link href="/about" className="navbar-link">about</Link>
-        <Link href="/mylist" className="navbar-link">my list</Link>
+        <Link href="/about">about</Link>
+        <Link href="/mylist">my list</Link>
         {user ? (
-          <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+          <div className="user-container">
             <Tooltip title="account">
               <IconButton
                 onClick={handleMenu}
@@ -94,10 +101,43 @@ const Navbar: React.FC = () => {
                 sign out
               </MenuItem>
             </Menu>
-          </Box>
+          </div>
         ) : (
-          <Link href="/login" className="navbar-link">log in</Link>
+          <button
+            onClick={() => setIsLoginModalOpen(true)}
+            className="navbar-link-button"
+          >
+            log in
+          </button>
         )}
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+          onForgotPasswordClick={() => {
+            setIsLoginModalOpen(false);
+            setIsForgotPasswordModalOpen(true);
+          }}
+          onSignUpClick={() => {
+            setIsLoginModalOpen(false);
+            setIsSignUpModalOpen(true);
+          }}
+        />
+        <ForgotModal
+          isOpen={isForgotPasswordModalOpen}
+          onClose={() => setIsForgotPasswordModalOpen(false)}
+          onLoginClick={() => {
+            setIsForgotPasswordModalOpen(false);
+            setIsLoginModalOpen(true);
+          }}
+        />
+        <SignUpModal
+          isOpen={isSignUpModalOpen}
+          onClose={() => setIsSignUpModalOpen(false)}
+          onLoginClick={() => {
+            setIsSignUpModalOpen(false);
+            setIsLoginModalOpen(true);
+          }}
+        />
       </div>
     </nav>
   );

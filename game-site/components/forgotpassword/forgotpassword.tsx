@@ -1,24 +1,39 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { sendPasswordResetEmail } from "firebase/auth";
+import React, { useState } from "react";
+import { Modal, Box, Typography, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { auth } from "../../app/firebase/config";
+import { sendPasswordResetEmail } from "firebase/auth";
 
-const ForgotPasswordPage: React.FC = () => {
+interface ForgotPasswordModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onLoginClick: () => void;
+}
+
+const ForgotModal: React.FC<ForgotPasswordModalProps> = ({
+  isOpen,
+  onClose,
+  onLoginClick
+}) => {
   const [email, setEmail] = useState<string>("");
-  const [message, setMessage] = useState<{ text: string; type: "success" | "error" }>({ text: "", type: "success" });
-  const router = useRouter();
+  const [message, setMessage] = useState<{
+    text: string;
+    type: "success" | "error";
+  }>({ text: "", type: "success" });
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const handleForgot = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+    setIsSubmitted(true);
+
     try {
       await sendPasswordResetEmail(auth, email);
-      setMessage({ text: "Email is sent if the acccount exists! Please check your inbox and spam.", type: "success" });
-      setTimeout(() => {
-        router.push("/login");
-      }, 3000);
+      setMessage({
+        text: "Email is sent if the account exists! Please check your inbox and spam.",
+        type: "success",
+      });
     } catch (error) {
       if (error instanceof Error) {
         setMessage({ text: error.message, type: "error" });
@@ -28,37 +43,121 @@ const ForgotPasswordPage: React.FC = () => {
     }
   };
 
+  const handleClose = () => {
+    setEmail("");
+    setMessage({ text: "", type: "success" });
+    setIsSubmitted(false);
+    onClose();
+  }
+
+  const modalStyle = {
+    position: "absolute" as const,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "100%",
+    maxWidth: "400px",
+    bgcolor: "#fff",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+    borderRadius: "8px",
+    p: 4,
+    outline: "none",
+  };
+
   return (
-    <div className="userCredentialsPrompt-container">
-      <div className="userCredentialsPrompt-form-container">
-        <h2 className="userCredentialsPrompt-text-color">
-          Reset your password
-        </h2>
-        <form onSubmit={handleForgot} className="userCredentialsPrompt-form">
+    <Modal
+      open={isOpen}
+      onClose={handleClose}
+      aria-labelledby="forgot-password-modal-title"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(25, 25, 25, 0.9)",
+      }}
+    >
+      <Box sx={modalStyle}>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+
+        <Typography
+          id="forgot-password-modal-title"
+          variant="h6"
+          component="h2"
+          sx={{
+            textAlign: "center",
+            mb: 3,
+            color: "#1a1a1a",
+          }}
+        >
+          Forgot Password
+        </Typography>
+
+        <form
+          onSubmit={handleForgot}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
           <input
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
-            }
-            className="userCredentialsPrompt-input"
+            onChange={(e) => setEmail(e.target.value)}
             required
+            className="userCredentialsPrompt-input"
           />
-          {message.text && (
-            <p
-              className={message.type === "error" ? "error-message" : "message"}
+
+          {isSubmitted && message.text && (
+            <Typography
+              sx={{
+                marginTop: "0.5rem",
+                textAlign: "center",
+                color: message.type === "success" ? "green" : "red",
+                fontSize: "0.9rem",
+              }}
             >
               {message.text}
-            </p>
+            </Typography>
           )}
-          <button type="submit" className="userCredentialsPrompt-button">
+
+          <button
+            type="submit"
+            className="userCredentialsPrompt-button"
+            style={{
+              padding: "10px 20px",
+              borderRadius: "5px",
+              background: "#007BFF",
+              color: "#fff",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
             Send password reset email
           </button>
         </form>
-      </div>
-    </div>
+        <div className="signup-login-forgot-link">
+        <p>
+          <button onClick={onLoginClick} className="signup-link">
+                Have an account? Click here to login!
+          </button>
+        </p>
+        </div>
+      </Box>
+    </Modal>
   );
 };
 
-export default ForgotPasswordPage;
+export default ForgotModal;
