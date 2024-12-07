@@ -362,6 +362,14 @@ svg {
   gap: 1rem;
 }
 
+.navbar-link-button, 
+.user-container .MuiIconButton-root {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .navbar-link-button {
   background-color: transparent;
   border: none;

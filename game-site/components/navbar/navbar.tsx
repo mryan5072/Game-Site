@@ -8,7 +8,7 @@ import { auth } from '../../app/firebase/config';
 import "../../app/globals.css";
 import { Menu, MenuItem, Avatar, Tooltip, IconButton, Divider, Typography, Box, ListItemIcon } from '@mui/material';
 import LoginModal from '../login/login';
-import ForgotModal from '../forgotpassword/forgotpassword';
+import ForgotModal from '../forgotPassword/forgotpassword';
 import SignUpModal from '../signup/signup';
 
 const Navbar: React.FC = () => {
@@ -103,12 +103,14 @@ const Navbar: React.FC = () => {
             </Menu>
           </div>
         ) : (
+          <div className="user-container">
           <button
             onClick={() => setIsLoginModalOpen(true)}
             className="navbar-link-button"
           >
             log in
           </button>
+        </div>
         )}
         <LoginModal
           isOpen={isLoginModalOpen}
