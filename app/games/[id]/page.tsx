@@ -23,6 +23,9 @@ interface Game {
     image_id: string;
   };
   summary?: string;
+  genres?: {
+    name: string;
+  }[];
   platforms?: number[];
   screenshots?: {
     image_id: string;
@@ -224,8 +227,25 @@ export default function GameDetailsPage({ params }: { params: { id: string } }) 
       <div className="game-info">
         <h1 className="game-title">{gameDetails.name}</h1>
         <p className="game-summary">{gameDetails.summary || 'No summary available'}</p>
+
+        <div className="game-platforms-genres">
+          <h2>Genres:</h2>
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+            {gameDetails.genres?.map((genre, index) => (
+              <div className='chip-container'>
+              <Chip 
+                key={index} 
+                label={genre.name || "Unknown Genre"}
+                color="primary" 
+                variant="filled" 
+                className="platform-name"
+              />
+              </div>
+            ))}
+          </Box>
+        </div>
         
-        <div className="game-platforms">
+        <div className="game-platforms-genres">
           <h2>Available on:</h2>
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
             {gameDetails.platforms?.map((platformId, index) => (
