@@ -121,7 +121,7 @@ body {
   transform: scale(1.05);
 }
 
-.game-platforms {
+.game-platforms-genres {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,7 +129,7 @@ body {
   margin-top: 15px;
 }
 
-.game-platforms .platform-name {
+.game-platforms-genres .platform-name {
   font-size: 14px;
   font-weight: bold;
   background-color: #b938f5;
@@ -140,7 +140,6 @@ svg {
   height: 20px;
 }
 
-/* prevents the global svg styles from affecting CircularProgress */
 .MuiCircularProgress-root svg {
   width: auto;
   height: auto;
