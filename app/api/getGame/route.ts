@@ -16,7 +16,7 @@ export async function POST(request: Request) {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
-        body: `fields name, cover.image_id, summary, screenshots.image_id, platforms; where id = (${gameId});`
+        body: `fields name, cover.image_id, summary, genres.name, screenshots.image_id, platforms; where id = (${gameId});`
       });
   
       if (!response.ok) {
