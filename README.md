@@ -110,7 +110,7 @@ Follow these steps to set up the project locally.
 - **Track Games**: Mark off games you have played or simply want to keep an eye on.
 - **Dynamic Ratings**: Aggregate ratings are updated in real-time.
 
-_For a detailed example, visit the [Live Demo](https://yourdemo.com)._  
+_For a detailed example, visit the [Live Demo](https://game-site-red.vercel.app/)._  
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
