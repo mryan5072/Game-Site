@@ -1,8 +1,5 @@
 ·<a id="readme-top"></a>
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
@@ -23,14 +20,14 @@
   <p align="center">
     A web app to track games, rate, and review your favorite titles.
     <br />
-    <a href="https://github.com/mryan5072/game-tracker"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/mryan5072/Game-Site"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/mryan5072/game-tracker">View Demo</a>
+    <a href="https://game-site-red.vercel.app/">View Demo</a>
     ·
-    <a href="https://github.com/mryan5072/game-tracker/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/mryan5072/Game-Site/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/mryan5072/game-tracker/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/mryan5072/Game-Site/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
