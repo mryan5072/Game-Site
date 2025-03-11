@@ -3,7 +3,7 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
+[![Issues][issues-shield]][[issues-url](https://github.com/mryan5072/Game-Site/issues)]
 [![License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
