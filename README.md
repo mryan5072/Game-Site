@@ -1,24 +1,14 @@
-·<a id="readme-top"></a>
-
-[![Issues][issues-shield]][issues-url]
-[![License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-<!-- Define your references below -->
-[issues-url]: https://github.com/mryan5072/Game-Site/issues
-[license-url]: https://github.com/mryan5072/Game-Site/blob/main/LICENSE
-[linkedin-url]: https://www.linkedin.com/in/matthew-ryan-b487a9346
 
 <br />
 <div align="center">
-  <a href="https://github.com/mryan5072/game-tracker">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/mryan5072/Game-Site">
+    <img src="https://gyazo.com/44835d6c6fd96ce1878240d81e220de1" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Game Tracker</h3>
 
   <p align="center">
-    A web app to track games, rate, and review your favorite titles.
+    A web app to search, review and track your favorite video games!
     <br />
     <a href="https://github.com/mryan5072/Game-Site"><strong>Explore the docs »</strong></a>
     <br />
@@ -63,7 +53,7 @@
 
 [![Product Screenshot][product-screenshot]](https://example.com)
 
-Game Tracker is a web application that allows users to search, rate, and review video games. Built with **Next.js**, **Firebase Firestore**, and **MUI**, the app seamlessly integrates the **IGDB API** to retrieve detailed game information while offering a dynamic and interactive user experience.
+Game Tracker is a web application that allows users to search, review and track video games. Built in **Next.js**, the app seamlessly integrates the **IGDB API** to retrieve detailed game information while offering a dynamic and interactive user experience.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -117,7 +107,7 @@ Follow these steps to set up the project locally.
 
 - **Search for Games**: Use the IGDB API to find game details by name.
 - **Review and Rate**: Leave star ratings and comments for any game.
-- **Track Games**: Mark games as played or wishlist for future tracking.
+- **Track Games**: Mark off games you have played or simply want to keep an eye on.
 - **Dynamic Ratings**: Aggregate ratings are updated in real-time.
 
 _For a detailed example, visit the [Live Demo](https://yourdemo.com)._  
@@ -141,7 +131,7 @@ _For a detailed example, visit the [Live Demo](https://yourdemo.com)._
 - [ ] Add game recommendation features
 - [ ] Improve UI with sorting and filtering options
 
-See the [open issues](https://github.com/mryan5072/game-tracker/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/mryan5072/Game-Site/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -167,7 +157,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Matthew Ryan - mryan5072@gmail.com
 
-Project Link: [https://github.com/mryan5072/game-tracker](https://github.com/mryan5072/game-tracker)
+Project Link: [https://github.com/mryan5072/Game-Site](https://github.com/mryan5072/Game-Site)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -181,19 +171,7 @@ Project Link: [https://github.com/mryan5072/game-tracker](https://github.com/mry
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/mryan5072/game-tracker.svg?style=for-the-badge
-[contributors-url]: https://github.com/mryan5072/game-tracker/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/mryan5072/game-tracker.svg?style=for-the-badge
-[forks-url]: https://github.com/mryan5072/game-tracker/network/members
-[stars-shield]: https://img.shields.io/github/stars/mryan5072/game-tracker.svg?style=for-the-badge
-[stars-url]: https://github.com/mryan5072/game-tracker/stargazers
-[issues-shield]: https://img.shields.io/github/issues/mryan5072/game-tracker.svg?style=for-the-badge
-[issues-url]: https://github.com/mryan5072/game-tracker/issues
-[license-shield]: https://img.shields.io/github/license/mryan5072/game-tracker.svg?style=for-the-badge
-[license-url]: https://github.com/mryan5072/game-tracker/blob/main/LICENSE
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/your_linkedin_username
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: https://i.gyazo.com/40512041b49c9f716771837b32674235.jpg
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [Firebase]: https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black
