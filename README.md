@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/mryan5072/Game-Site">
-    <img src="https://gyazo.com/44835d6c6fd96ce1878240d81e220de1" alt="Logo" width="80" height="80">
+    <img src="https://i.gyazo.com/44835d6c6fd96ce1878240d81e220de1.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Game Tracker</h3>
