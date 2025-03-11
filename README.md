@@ -3,9 +3,14 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][https://github.com/mryan5072/Game-Site/issues]
+[![Issues][issues-shield]][issues-url]
 [![License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+
+<!-- Define your references below -->
+[issues-url]: https://github.com/mryan5072/Game-Site/issues
+[license-url]: https://github.com/mryan5072/Game-Site/blob/main/LICENSE
+[linkedin-url]: https://www.linkedin.com/in/matthew-ryan-b487a9346
 
 <br />
 <div align="center">
